@@ -16,3 +16,11 @@ spring:
           uri: http://localhost:8083
           predicates:
             - Path=/inventory/**
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - prometheus

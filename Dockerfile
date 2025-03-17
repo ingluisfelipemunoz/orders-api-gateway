@@ -1,11 +1,11 @@
-# Usa una imagen base de Java
+FROM maven:3.9-amazoncorretto-21-al2023 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
 FROM openjdk:21-slim
-
-# Copia el jar construido al contenedor
-COPY target/api-gateway*.jar api-gateway.jar
-
-# Expone el puerto 8888
+WORKDIR /app
+COPY --from=build /app/target/api-gateway*.jar api-gateway.jar
 EXPOSE 8888
-
-# Define el entrypoint para iniciar la aplicación
 ENTRYPOINT ["java", "-jar", "api-gateway.jar"]
